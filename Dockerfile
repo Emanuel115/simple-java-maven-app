@@ -13,18 +13,24 @@ RUN mvn package
 FROM eclipse-temurin:17-jre-alpine
 WORKDIR /app
 
-# Create non-root user for security
-RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-USER appuser
-
+# Accept build argument and set it as an environment variable
 ARG VAR
 ENV VAR=${VAR}
 
-# Rename the JAR file dynamically
+# Copy the JAR file before switching user
 COPY --from=build /app/target/*.jar /app/app.jar
 
-# Rename the jar file inside the container
-RUN mv /app/app.jar /app/app.jar${VAR}
+# Rename the JAR file with the build argument
+RUN mv /app/app.jar /app/app-${VAR}.jar
 
-CMD ["bash", "-c", "java -jar /app/app.jar${VAR}"]
+# Create non-root user for security
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+
+# Change ownership to the new user
+RUN chown -R appuser:appgroup /app
+
+USER appuser
+
+# Run the renamed JAR file
+CMD ["sh", "-c", "java -jar /app/app-${VAR}.jar"]
 
