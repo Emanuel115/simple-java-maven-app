@@ -44,7 +44,7 @@ jobs:
       - name: Deploy to EC2
         run: |
           RUN_NUMBER=${{ github.run_number }}
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key.pem ubuntu@51.21.196.92 << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ~/.ssh/deploy_key.pem ubuntu@51.21.196.92 << EOF
             docker pull emanuel115/maven-app:1.0.$RUN_NUMBER
             docker run -d --name maven-app -p 8080:8080 emanuel115/maven-app:1.0.$RUN_NUMBER
           EOF
