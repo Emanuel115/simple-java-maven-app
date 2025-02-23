@@ -32,5 +32,5 @@ RUN chown -R appuser:appgroup /app
 USER appuser
 
 # Run the renamed JAR file
-CMD ["sh", "-c", "java -jar /app/app-${VAR}.jar"]
+CMD sh -c "java -jar /app/app-1.0.${VAR}.jar"
 
