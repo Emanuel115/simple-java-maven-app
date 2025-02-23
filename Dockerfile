@@ -26,5 +26,5 @@ COPY --from=build /app/target/*.jar /app/app.jar
 # Rename the jar file inside the container
 RUN mv /app/app.jar /app/app.jar${VAR}
 
-CMD ["sh", "-c", "java -jar /app/app.jar${VAR}"]
+CMD ["bash", "-c", "java -jar /app/app.jar${VAR}"]
 
