@@ -24,7 +24,7 @@ jobs:
       - name: Build Docker Image
         run: |
           RUN_NUMBER=${{ github.run_number }}
-          docker build -t emanuel115/maven-app:1.0.${RUN_NUMBER} .
+          docker build --build-arg VAR=${RUN_NUMBER} -t emanuel115/maven-app:1.0.${RUN_NUMBER} .
       
       - name: Push to Docker Hub
         run: |

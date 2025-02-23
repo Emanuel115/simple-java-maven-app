@@ -17,5 +17,14 @@ WORKDIR /app
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
 USER appuser
 
-COPY --from=build /app/target/*.jar app.jar
-CMD ["java", "-jar", "app.jar"]
+ARG VAR
+ENV VAR=${VAR}
+
+# Rename the JAR file dynamically
+COPY --from=build /app/target/*.jar /app/app.jar
+
+# Rename the jar file inside the container
+RUN mv /app/app.jar /app/app.jar${VAR}
+
+CMD ["sh", "-c", "java -jar /app/app.jar${VAR}"]
+
